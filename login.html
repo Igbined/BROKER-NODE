@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Broker Node - Secure P2P Escrow</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              green: '#22c55e',
+              'green-hover': '#16a34a',
+              bg: '#121315',
+              card: '#18191c',
+              input: '#121315',
+              border: '#26272b',
+              muted: '#9ca3af'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #0c0d0e;
+    }
+  </style>
+</head>
+<body class="min-h-screen text-slate-100 flex items-center justify-center p-4">
+
+  <div x-data="{ page: 'signin', showPass: false, showConfirmPass: false }" class="w-full max-w-md">
+
+    <div x-show="page === 'signin'" class="bg-brand-card border border-brand-border rounded-2xl p-8 shadow-2xl space-y-6">
+      <div>
+        <h1 class="text-3xl font-extrabold tracking-tight text-white mb-1">Sign In</h1>
+        <p class="text-sm text-brand-muted">Access your secure P2P escrow account</p>
+      </div>
+
+      <form @submit.prevent class="space-y-5">
+        <div class="space-y-2">
+          <label class="block text-xs font-bold tracking-wider text-brand-muted uppercase">Email or Username</label>
+          <div class="relative flex items-center">
+            <i data-lucide="user" class="w-5 h-5 absolute left-3.5 text-brand-muted"></i>
+            <input 
+              type="text" 
+              placeholder="Enter your registered email..." 
+              class="w-full bg-brand-input border border-brand-border rounded-xl py-3 pl-11 pr-4 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-slate-500 transition-colors"
+            >
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <label class="block text-xs font-bold tracking-wider text-brand-muted uppercase">Password</label>
+          <div class="relative flex items-center">
+            <i data-lucide="lock" class="w-5 h-5 absolute left-3.5 text-brand-muted"></i>
+            <input 
+              :type="showPass ? 'text' : 'password'" 
+              placeholder="••••••••••••" 
+              class="w-full bg-brand-input border border-brand-border rounded-xl py-3 pl-11 pr-11 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-slate-500 transition-colors"
+            >
+            <button type="button" @click="showPass = !showPass" class="absolute right-3.5 text-brand-muted hover:text-white transition-colors">
+              <i data-lucide="eye" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between text-sm">
+          <label class="flex items-center space-x-2.5 cursor-pointer">
+            <input type="checkbox" checked class="w-4 h-4 accent-brand-green rounded border-brand-border bg-brand-input cursor-pointer">
+            <span class="text-gray-300">Remember me</span>
+          </label>
+          <a href="#" class="text-brand-green font-medium hover:underline">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="w-full bg-white text-black font-semibold py-3.5 rounded-xl hover:bg-gray-100 transition-colors text-sm shadow-sm">
+          Sign In securely
+        </button>
+      </form>
+
+      <div class="text-center text-sm pt-2">
+        <span class="text-gray-400">Don't have an account?</span>
+        <button @click="page = 'signup'" class="block w-full mt-1 text-brand-green font-bold hover:underline">
+          Create Escrow Account
+        </button>
+      </div>
+    </div>
+
+    <div x-show="page === 'signup'" x-cloak class="bg-brand-card border border-brand-border rounded-2xl p-8 shadow-2xl space-y-6">
+      <div>
+        <h1 class="text-3xl font-extrabold tracking-tight text-white mb-1">Create secure account</h1>
+        <p class="text-sm text-brand-muted">Set up your wallet-escrow dashboard in seconds.</p>
+      </div>
+
+      <form @submit.prevent class="space-y-4">
+        <div class="space-y-1.5">
+          <label class="block text-xs font-bold tracking-wider text-brand-muted uppercase">Email Address</label>
+          <input 
+            type="email" 
+            placeholder="e.g. satoshi@protonmail.com" 
+            class="w-full bg-brand-input border border-brand-border rounded-xl py-3 px-4 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-slate-500 transition-colors"
+          >
+        </div>
+
+        <div class="space-y-1.5">
+          <label class="block text-xs font-bold tracking-wider text-brand-muted uppercase">Password</label>
+          <div class="relative flex items-center">
+            <input 
+              :type="showPass ? 'text' : 'password'" 
+              placeholder="••••••••••••" 
+              class="w-full bg-brand-input border border-brand-border rounded-xl py-3 pl-4 pr-11 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-slate-500 transition-colors"
+            >
+            <button type="button" @click="showPass = !showPass" class="absolute right-3.5 text-brand-muted hover:text-white transition-colors">
+              <i data-lucide="eye" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="space-y-1.5">
+          <label class="block text-xs font-bold tracking-wider text-brand-muted uppercase">Confirm Password</label>
+          <div class="relative flex items-center">
+            <input 
+              :type="showConfirmPass ? 'text' : 'password'" 
+              placeholder="••••••••••••" 
+              class="w-full bg-brand-input border border-brand-border rounded-xl py-3 pl-4 pr-11 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-slate-500 transition-colors"
+            >
+            <button type="button" @click="showConfirmPass = !showConfirmPass" class="absolute right-3.5 text-brand-muted hover:text-white transition-colors">
+              <i data-lucide="eye" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="space-y-1.5">
+          <label class="block text-xs font-bold tracking-wider text-brand-muted uppercase">Country</label>
+          <div class="relative flex items-center">
+            <select class="w-full bg-brand-input border border-brand-border rounded-xl py-3 px-4 text-sm text-gray-400 focus:outline-none focus:border-slate-500 transition-colors appearance-none cursor-pointer">
+              <option value="" disabled selected>Select your country</option>
+              <option value="US">United States</option>
+              <option value="GB">United Kingdom</option>
+              <option value="CA">Canada</option>
+              <option value="NG">Nigeria</option>
+            </select>
+            <i data-lucide="chevron-down" class="w-5 h-5 absolute right-3.5 text-brand-muted pointer-events-none"></i>
+          </div>
+        </div>
+
+        <div class="space-y-1.5">
+          <label class="block text-xs font-bold tracking-wider text-brand-muted uppercase">Referral Code (Optional)</label>
+          <input 
+            type="text" 
+            placeholder="Friend's invite code" 
+            class="w-full bg-brand-input border border-brand-border rounded-xl py-3 px-4 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-slate-500 transition-colors"
+          >
+        </div>
+
+        <div class="pt-2">
+          <label class="flex items-start space-x-3 cursor-pointer">
+            <input type="checkbox" checked class="mt-0.5 w-4 h-4 accent-brand-green rounded border-brand-border bg-brand-input cursor-pointer flex-shrink-0">
+            <span class="text-xs text-gray-300 leading-normal">
+              I agree to the <a href="#" class="text-brand-green hover:underline">Terms of Service</a> and understand my trades are secured cryptographically.
+            </span>
+          </label>
+        </div>
+
+        <button type="submit" class="w-full bg-white text-black font-semibold py-3.5 rounded-xl hover:bg-gray-100 transition-colors text-sm shadow-sm pt-3">
+          Register Account
+        </button>
+      </form>
+
+      <div class="text-center text-sm pt-1">
+        <span class="text-gray-400">Already have an account?</span>
+        <button @click="page = 'signin'" class="text-brand-green font-bold hover:underline ml-1">
+          Sign In
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>
+
